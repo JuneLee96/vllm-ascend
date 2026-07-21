@@ -178,6 +178,8 @@ elif [[ "$SOC_VERSION" =~ ^ascend950 ]]; then
 
     CUSTOM_OPS_ARRAY=(
         "compressor_metadata"
+        "kv_quant_sparse_attn_sharedkv"
+        "kv_quant_sparse_attn_sharedkv_metadata"
         "load_index_kv_cache"
         "causal_conv1d"
         "recurrent_gated_delta_rule"

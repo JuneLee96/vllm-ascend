@@ -1343,7 +1343,7 @@ class A5DeviceAdaptor(BaseDeviceAdaptor):
 
     @staticmethod
     def get_dsa_sparse_attn_metadata_op():
-        return torch.ops.custom.npu_kv_quant_sparse_attn_sharedkv_metadata
+        return torch.ops._C_ascend.npu_kv_quant_sparse_attn_sharedkv_metadata
 
     @staticmethod
     def get_dsa_sparse_attn_metadata_kwargs(device):
@@ -1351,7 +1351,7 @@ class A5DeviceAdaptor(BaseDeviceAdaptor):
 
     @staticmethod
     def get_dsa_sparse_attn_op():
-        return torch.ops.custom.npu_kv_quant_sparse_attn_sharedkv
+        return torch.ops._C_ascend.npu_kv_quant_sparse_attn_sharedkv
 
     @staticmethod
     def get_dsa_sparse_attn_base_kwargs():
@@ -1374,7 +1374,7 @@ class A5DeviceAdaptor(BaseDeviceAdaptor):
             x=x.view(-1, x.shape[-1]),
             slot_mapping=slot_mapping.view(-1),
             quant_group_size=64,
-            quant_mode="fp8_bf16",
+            quant_mode="hifloat8_fp4",
             round_scale=True,
             x_scale=1.0,
         )
@@ -1389,8 +1389,7 @@ class A5DeviceAdaptor(BaseDeviceAdaptor):
 
     @staticmethod
     def indexer_quant_scatter(q, kv, indexer_k_cache, indexer_scale_cache, indexer_full_cache, slot_mapping):
-        """Quantize q (fp8) and scatter kv via indexer_quant_cache.
-        Uses separate k_cache and scale_cache tensors."""
+        """Quantize q (fp8) and scatter kv via indexer_quant_cache."""
         q, q_scale = torch_npu.npu_dynamic_quant(q, dst_type=torch.float8_e4m3fn)
 
         kv_out = kv
